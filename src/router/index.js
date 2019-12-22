@@ -8,6 +8,10 @@ VueRouter.prototype.push = function push(location) {
 
 const routes = [
   {
+    path:'/',
+    redirect: '/home'
+  },
+  {
     path: "/home",
     component: () => import("../views/home/home.vue")
   },

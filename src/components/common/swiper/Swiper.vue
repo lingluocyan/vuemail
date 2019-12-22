@@ -1,5 +1,5 @@
 <template>
-  <swiper :options="swiperOption" ref="mySwiper">
+  <swiper v-if="bannerList.length>0" :options="swiperOption" ref="mySwiper">
     <!-- slides -->
     <swiper-slide v-for="(item, index) in bannerList" :key="index">
       <img :src="item.image" style="width:100%" alt="" />
@@ -26,14 +26,14 @@ export default {
   data() {
     return {
       swiperOption: {
-        autoplay: {
-          delay: 1000,
-          disableOnInteraction: false
-        },
-        loop: true,
         pagination: {
           el: ".swiper-pagination"
-        }
+        },
+        loop:true,
+          autoplay: {
+            delay: 3000,
+            disableOnInteraction: false
+          },
       }
     };
   },
@@ -45,7 +45,6 @@ export default {
   mounted() {
     // current swiper instance
     // 然后你就可以使用当前上下文内的swiper对象去做你想做的事了
-    console.log("this is current swiper instance object", this.swiper);
     this.swiper.slideTo(3, 1000, false);
   },
   components: {
