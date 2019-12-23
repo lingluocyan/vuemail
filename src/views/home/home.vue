@@ -5,7 +5,14 @@
         <h6>我是内容</h6>
       </div>
     </nav-bar>
-
+    <tab-control
+      v-show="isTabFixed"
+      class="tabControl"
+      ref="tabControl1"
+      @change-item="changeItem"
+      :titles="titles"
+      :pull-up-load="true"
+    ></tab-control>
     <!-- <swiper>
       <swiper-item v-for="(item, index) in banners" :key="index">
         <a :href="item.link">
@@ -13,13 +20,18 @@
         </a>
     </swiper-item>
     </swiper> -->
-    <scroll @scroll-position="scrollPosition" @load-more="loadMore" class="content" ref="scrolls">
-      <swiper :banner-list="banners"></swiper>
+    <scroll
+      @scroll-position="scrollPosition"
+      @load-more="loadMore"
+      class="content"
+      ref="scrolls"
+    >
+      <swiper @swiperImgLoad="swiperImgLoad" :banner-list="banners"></swiper>
       <recommend-view :img-list="recommend"></recommend-view>
       <feature></feature>
       <tab-control
+        ref="tabControl2"
         @change-item="changeItem"
-        class="tab-control"
         :titles="titles"
         :pull-up-load="true"
       ></tab-control>
@@ -42,6 +54,7 @@ import backToTop from "components/content/backToTop/backToTop";
 import Swiper from "@/components/common/swiper/Swiper.vue";
 import { getHomeMultidataData, getHomeGoods } from "@/network/home.js";
 
+import { debounce } from "@/common/util";
 export default {
   props: {},
   data() {
@@ -56,7 +69,9 @@ export default {
         sell: { page: 0, list: [] }
       },
       type: "pop",
-      scrollPositiony: 0
+      scrollPositiony: 0,
+      tabOffsetTop: 0, // tabBar距离顶部的距离
+      saveY: 0
     };
   },
   computed: {
@@ -64,7 +79,10 @@ export default {
       return this.goods[this.type].list;
     },
     showToTop() {
-      return this.scrollPositiony < -900
+      return this.scrollPositiony < -900;
+    },
+    isTabFixed() {
+      return Math.floor(this.scrollPositiony) < -(this.tabOffsetTop - 40);
     }
   },
   created() {
@@ -73,13 +91,27 @@ export default {
     this._getHomeGoods("new");
     this._getHomeGoods("sell");
   },
-  mounted() {},
+  mounted() {
+    console.log(this.tabOffsetTop.offsetTop, "this.tabOffsetTop");
+    // 返回一个函数
+    const refresh = debounce(this.$refs.scrolls.refreshs, 300);
+    this.$bus.$on("imgLoad", () => {
+      refresh();
+      // this.$refs.scrolls.refreshs();
+    });
+  },
   watch: {},
+  activated() {
+    console.log("wdd");
+    this.$refs.scrolls.scrollTos(0, this.saveY, 0);
+    this.$refs.scrolls.refreshs()
+  },
+  deactivated() {
+    this.saveY = this.$refs.scrolls.getScrollY;
+  },
   methods: {
     async _getHomeMultidataData() {
       let res = await getHomeMultidataData();
-      // getHomeMultidataData().then(res => {
-      console.log(res);
       if (res.success) {
         this.banners = res.data.banner.list;
         this.recommend = res.data.recommend.list;
@@ -100,7 +132,7 @@ export default {
       console.log(res, "goods");
     },
     changeItem(data) {
-      switch (data) {
+      switch (data.title) {
         case "流行":
           this.type = "pop";
           break;
@@ -113,26 +145,43 @@ export default {
         default:
           break;
       }
+      this.$refs.tabControl1;
       // if (data === '流行')
-      console.log(data, "weqweqew");
+      this.$refs.tabControl2.currentIndex = data.index;
+      console.log(this.$refs.tabControl1, "weqweqew");
     },
     loadMore(data) {
-      console.log(data,'加载啦')
+      console.log(data, "加载啦");
       if (data) {
-        let type = this.type
+        let type = this.type;
         // 获取更多数据
-        this._getHomeGoods(type)
+        this._getHomeGoods(type);
       }
     },
     backToTop() {
       // console.log(this.$refs.scroll,'top')
       // 传入三个参数，分别是x,y,time
-      this.$refs.scrolls.scroll.scrollTo(0,0,500)
+      this.$refs.scrolls.scrollTos(0, 0, 500);
     },
     scrollPosition(data) {
-      this.scrollPositiony = data.y
-      // console.log(data,'rollllll')
+      this.scrollPositiony = data.y;
+    },
+    swiperImgLoad() {
+      console.log(this.$refs.tabControl2.$el.offsetTop, "okkkkkk");
+      this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
     }
+    // debounce(func, delay) {
+    //   // 防抖
+    //   let timer = null;
+    //   return function(...arg) {
+    //     if (timer) {
+    //       clearTimeout(timer);
+    //     }
+    //     timer = setTimeout(() => {
+    //       func.apply(this, arg);
+    //     }, delay);
+    //   };
+    // }
   },
   components: {
     NavBar,
@@ -177,5 +226,12 @@ export default {
   bottom: 49px;
   left: 0;
   right: 0; */
+}
+.tabControl {
+  position: fixed;
+  top: 44px;
+  z-index: 9;
+  left: 0;
+  right: 0;
 }
 </style>

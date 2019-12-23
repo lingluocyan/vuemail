@@ -1,7 +1,7 @@
 <template>
-  <div class="goods-list-item">
+  <div class="goods-list-item" @click="itemClick">
     <div>
-      <img :src="goodsItem.show.img" alt="" />
+      <img :src="goodsItem.show.img" @load="imgLoad" alt="" />
     </div>
     <div class="goods-info">
       <p>{{ goodsItem.title }}</p>
@@ -27,7 +27,22 @@ export default {
   created() {},
   mounted() {},
   watch: {},
-  methods: {},
+  methods: {
+    imgLoad() {
+      this.$bus.$emit('imgLoad','=-=-=-=')
+      console.log('load')
+    },
+    // 详情页跳转
+    itemClick() {
+      this.$router.push('/detail/' + this.goodsItem.iid)
+      // this.$router.push({
+      //   path: '/detail/',
+      //   query: {
+      //     id: this.goodsItem.iid
+      //   }
+      // })
+    }
+  },
   components: {}
 };
 </script>

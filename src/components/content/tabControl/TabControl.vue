@@ -35,7 +35,7 @@ export default {
     changeItem(index) {
       this.currentIndex = index
       console.log(this.titles[index],'titles[index]')
-      this.$emit('change-item',this.titles[index])
+      this.$emit('change-item',{title:this.titles[index],index:index})
     }
   },
   components: {}

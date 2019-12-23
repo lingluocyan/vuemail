@@ -1,17 +1,13 @@
 <template>
-  <div>
-    <swiper v-if="bannerList.length>0" :options="swiperOption" ref="mySwipers">
-      <!-- slides -->
-      <swiper-slide v-for="(item, index) in bannerList" :key="index">
-        <img @load="imgLoad" :src="item.image" style="width:100%" alt="" />
-      </swiper-slide>
-      <!-- Optional controls -->
-      <div class="swiper-pagination" slot="pagination"></div>
-      <!-- <div class="swiper-button-prev" slot="button-prev"></div> -->
-      <!-- <div class="swiper-button-next" slot="button-next"></div> -->
-      <div class="swiper-scrollbar" slot="scrollbar"></div>
-    </swiper>
-  </div>
+  <swiper v-if="bannerList.length > 0" :options="swiperOption" ref="mySwipers" class="swiper">
+    <!-- slides -->
+    <swiper-slide v-for="(item, index) in bannerList" :key="index">
+      <img @load="imgLoad" :src="item" style="width:100%" alt="" />
+    </swiper-slide>
+    <!-- Optional controls -->
+    <div class="swiper-pagination" slot="pagination"></div>
+    <div class="swiper-scrollbar" slot="scrollbar"></div>
+  </swiper>
 </template>
 
 <script>
@@ -32,11 +28,11 @@ export default {
         pagination: {
           el: ".swiper-pagination"
         },
-        loop:true,
-          autoplay: {
-            delay: 3000,
-            disableOnInteraction: false
-          },
+        loop: true,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false
+        }
       }
     };
   },
@@ -57,15 +53,19 @@ export default {
   methods: {
     imgLoad() {
       if (!this.isLoad) {
-        this.$emit('swiperImgLoad')
-        this.isLoad = true
+        this.$emit("swiperImgLoad");
+        this.isLoad = true;
       }
     }
-  },
+  }
 };
 </script>
 <style lang="less">
 .swiper-pagination-bullet-active {
   background-color: #fff;
+}
+.swiper {
+  height: 300px;
+  margin:44px 0 0 0;
 }
 </style>
