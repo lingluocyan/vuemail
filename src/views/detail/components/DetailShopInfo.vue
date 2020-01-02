@@ -33,36 +33,12 @@
                   <td class="better" :class="{'better-more': item.isBetter}"><span>{{item.isBetter ? '高':'低'}}</span></td>
                 </tr>
               </table>
-          <!-- <div class="detail-right-item" v-for="(item, index) in shopInfo.score" :key="index">
-            <span>{{item.name}}&nbsp;&nbsp;</span>
-            <span>{{item.score}}&nbsp;&nbsp;</span>
-            <span>{{item.isBetter ? '高' : '低'}}</span>
-          </div> -->
         </div>
       </div>
+          <div class="goShop">
+            <button>进店逛逛</button>
+          </div>
     </div>
-    <ul>
-      <li>xxx*</li>
-      <li>xxx*</li>
-      <li>xxx*</li>
-      <li>xxx*</li>
-      <li>xxx*</li>
-      <li>xxx*</li>
-      <li>xxx*</li>
-      <li>xxx*</li>
-      <li>xxx*</li>
-      <li>xxx*</li>
-      <li>xxx*</li>
-      <li>xxx*</li>
-      <li>xxx*</li>
-      <li>xxx*</li>
-      <li>xxx*</li>
-      <li>xxx*</li>
-      <li>xxx*</li>
-      <li>xxx*</li>
-      <li>xxx*</li>
-      <li>xxx*</li>
-    </ul>
   </div>
 </template>
 
@@ -157,6 +133,12 @@ export default {
   }
   .better-more span {
     background-color: #f13e3a;
+  }
+  .goShop {
+    margin-top: 20px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
   }
 
 </style>

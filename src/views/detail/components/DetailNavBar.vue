@@ -30,14 +30,23 @@ export default {
       topImgs:[]
     };
   },
-  computed: {},
-  created() {
+  computed: {
+    
   },
-  mounted() {},
+  created() {
+
+  },
+  mounted() {
+    this.$bus.$on('highLight',(data)=> {
+      console.log(data,'highLight')
+      this.currentIndex = data
+    })
+  },
   watch: {},
   methods: {
     changeItem(index) {
       this.currentIndex = index;
+      this.$emit('titleClick',index)
     },
     goback() {
       this.$router.go(-1);

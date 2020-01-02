@@ -52,9 +52,11 @@ import NavBar from "@/components/common/navbar/NavBar";
 import GoodsList from "components/content/goods/GoodsList";
 import backToTop from "components/content/backToTop/backToTop";
 import Swiper from "@/components/common/swiper/Swiper.vue";
+
+import {itemListenerMixin} from "@/common/mixins"
 import { getHomeMultidataData, getHomeGoods } from "@/network/home.js";
 
-import { debounce } from "@/common/util";
+// import { debounce } from "@/common/util";
 export default {
   props: {},
   data() {
@@ -74,6 +76,7 @@ export default {
       saveY: 0
     };
   },
+  mixins:[itemListenerMixin],
   computed: {
     goodsList() {
       return this.goods[this.type].list;
@@ -92,17 +95,16 @@ export default {
     this._getHomeGoods("sell");
   },
   mounted() {
-    console.log(this.tabOffsetTop.offsetTop, "this.tabOffsetTop");
-    // 返回一个函数
-    const refresh = debounce(this.$refs.scrolls.refreshs, 300);
-    this.$bus.$on("imgLoad", () => {
-      refresh();
-      // this.$refs.scrolls.refreshs();
-    });
+    // console.log(this.tabOffsetTop.offsetTop, "this.tabOffsetTop");
+    // // 返回一个函数
+    // const refresh = debounce(this.$refs.scrolls.refreshs, 300);
+    // this.$bus.$on("imgLoad", () => {
+    //   refresh();
+    //   // this.$refs.scrolls.refreshs();
+    // });
   },
   watch: {},
   activated() {
-    console.log("wdd");
     this.$refs.scrolls.scrollTos(0, this.saveY, 0);
     this.$refs.scrolls.refreshs()
   },
@@ -112,6 +114,7 @@ export default {
   methods: {
     async _getHomeMultidataData() {
       let res = await getHomeMultidataData();
+      console.log(res)
       if (res.success) {
         this.banners = res.data.banner.list;
         this.recommend = res.data.recommend.list;
@@ -147,6 +150,7 @@ export default {
       }
       this.$refs.tabControl1;
       // if (data === '流行')
+      this.$refs.tabControl1.currentIndex = data.index;
       this.$refs.tabControl2.currentIndex = data.index;
       console.log(this.$refs.tabControl1, "weqweqew");
     },

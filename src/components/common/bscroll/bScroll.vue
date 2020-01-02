@@ -20,6 +20,10 @@ export default {
       // 3可以启用监听滚动
       type: Boolean,
       default: () => true
+    },
+    themeTopYs: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -45,6 +49,17 @@ export default {
       this.scroll.on("scroll", position => {
         // 监听滚动
         this.$emit("scroll-position", position);
+        // this.$nextTick(()=> {
+        //   const positionY = -position.y;
+        //   for (let i in this.themeTopYs) {
+        //     if (
+        //       positionY > this.themeTopYs[i] &&
+        //       positionY < this.themeTopYs[i + 1]
+        //     ) {
+        //       console.log(i,'iiiii');
+        //     }
+        //   }
+        // })
       });
     }
   },
@@ -57,7 +72,7 @@ export default {
       this.scroll && this.scroll.refresh();
     },
     getScrollY() {
-      return this.scroll ? this.scroll.y : 0
+      return this.scroll ? this.scroll.y : 0;
     },
     debounce(func, delay) {
       // 防抖

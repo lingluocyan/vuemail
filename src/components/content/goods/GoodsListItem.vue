@@ -1,7 +1,8 @@
 <template>
   <div class="goods-list-item" @click="itemClick">
     <div>
-      <img :src="goodsItem.show.img" @load="imgLoad" alt="" />
+      <!-- <img :src="goodsItem.show.img" @load="imgLoad" alt="" /> -->
+      <img :src="showImg" @load="imgLoad" alt="" />
     </div>
     <div class="goods-info">
       <p>{{ goodsItem.title }}</p>
@@ -23,7 +24,12 @@ export default {
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    showImg() {
+      return this.goodsItem.image || this.goodsItem.show.img
+      // return this.goodsItem.image ? this.goodsItem.image : this.goodsItem.show.img
+    }
+  },
   created() {},
   mounted() {},
   watch: {},
@@ -34,7 +40,9 @@ export default {
     },
     // 详情页跳转
     itemClick() {
-      this.$router.push('/detail/' + this.goodsItem.iid)
+      console.log(this.goodsItem,'wwwddd')
+      let id = this.goodsItem.iid || this.goodsItem.shop_id
+      this.$router.push('/detail/' + id)
       // this.$router.push({
       //   path: '/detail/',
       //   query: {

@@ -37,14 +37,13 @@ export default {
     };
   },
   computed: {
-    swiper() {
-      return this.$refs.mySwipers.swiper;
-    }
+
   },
   mounted() {
     // current swiper instance
     // 然后你就可以使用当前上下文内的swiper对象去做你想做的事了
-    this.swiper.slideTo(3, 1000, false);
+
+    // console.log(this.$refs.mySwipers.swiper,'this.$refs.mySwipers')
   },
   components: {
     swiper,
